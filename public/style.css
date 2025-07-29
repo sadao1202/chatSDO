@@ -1,0 +1,172 @@
+/* 全体 */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #202123;
+  color: #e5e5e5;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  background-color: #343541;
+  padding: 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+#container {
+  flex-grow: 1;
+  display: flex;
+  height: calc(100vh - 56px); /* header高さ分調整 */
+}
+
+/* 左サイドバー */
+#chat-list {
+  background-color: #2c2f38;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+#new-chat-btn {
+  background-color: #10a37f;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  user-select: none;
+}
+
+#new-chat-btn:hover {
+  background-color: #0c6b56;
+}
+
+#chat-entries {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+#chat-entries li {
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: #40414f;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#chat-entries li.active {
+  background-color: #10a37f;
+  font-weight: bold;
+  color: white;
+}
+
+/* 右チャットエリア */
+#chat-area {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #343541;
+}
+
+#chat {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* 吹き出し */
+.message {
+  max-width: 75%;
+  padding: 0.75rem 1rem;
+  border-radius: 18px;
+  line-height: 1.4;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.message.user {
+  background: linear-gradient(135deg, #6a9afc 0%, #1e3bea 100%);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 10px rgba(30, 59, 234, 0.5);
+}
+
+.message.bot {
+  background-color: #444654;
+  color: #e5e5e5;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+#input-area {
+  background-color: #40414f;
+  padding: 0.75rem 1rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+#input-message {
+  flex-grow: 1;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background-color: #202123;
+  color: white;
+  box-shadow: inset 0 0 5px #000000aa;
+  font-family: inherit;
+}
+
+#input-message::placeholder {
+  color: #8e8e8e;
+}
+
+#send-btn {
+  background-color: #10a37f;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  padding: 0 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+  user-select: none;
+}
+
+#send-btn:hover:not(:disabled) {
+  background-color: #0c6b56;
+}
+
+#send-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

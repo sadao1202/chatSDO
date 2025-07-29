@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>さだお専用チャットシステム</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>さだお専用チャットシステム</header>
+
+  <div id="container">
+    <aside id="chat-list">
+      <button id="new-chat-btn">＋ 新しいチャット</button>
+      <ul id="chat-entries"></ul>
+    </aside>
+
+    <main id="chat-area">
+      <div id="chat"></div>
+      <div id="input-area">
+        <input id="input-message" type="text" placeholder="メッセージを入力..." autocomplete="off" />
+        <button id="send-btn">送信</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
