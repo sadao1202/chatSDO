@@ -51,7 +51,7 @@ app.post('/chat', async (req, res) => {
 
   try {
     const response = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
-      model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+      model: 'moonshotai/kimi-k2-instruct',
       messages: contextMessages
     }, {
       headers: {
