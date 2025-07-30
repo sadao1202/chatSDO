@@ -6,7 +6,7 @@ const fs = require('fs');
 
 dotenv.config();
 
-const memoryDir = './chatdata';
+const memoryDir = path.join(__dirname, 'chatdata');
 if (!fs.existsSync(memoryDir)) fs.mkdirSync(memoryDir);
 
 const app = express();
@@ -60,7 +60,7 @@ app.post('/chat', async (req, res) => {
       }
     });
 
-    const reply = response.data.choices[0].message.content;
+    const reply = response.data?.choices?.[0]?.message?.content ?? '⚠️ 返答が取得できませんでした';
     history.push({ role: 'assistant', content: reply });
     saveHistory(chatId, history);
 

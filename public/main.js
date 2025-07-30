@@ -78,9 +78,9 @@ function renderChatList() {
           currentChatId = keys.length ? keys[0] : null;
           renderMessages();
         }
-        renderChatList();
       }
-    });
+        renderChatList();
+      });
 
     li.appendChild(span);
     li.appendChild(inputTitle);
