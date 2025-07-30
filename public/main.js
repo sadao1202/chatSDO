@@ -105,7 +105,14 @@ function renderMessages() {
     const div = document.createElement('div');
     const roleClass = role === 'user' ? 'user' : 'assistant';
     div.classList.add('message', roleClass);
-    div.textContent = `${role === 'user' ? '🧑' : '🤖'} ${content}`;
+    if (role === 'user') {
+      div.textContent = `🧑 ${content}`;
+      div.innerHTML = `🧑 ${content}`;
+    } else {
+      const html = marked.parse(content);  // ← Markdown -> HTML
+      div.textContent = `🤖 ${content}`;
+      div.innerHTML = `🤖 ${html}`;
+    }
     chat.appendChild(div);
   });
   chat.scrollTop = chat.scrollHeight;

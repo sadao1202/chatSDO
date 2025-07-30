@@ -134,6 +134,30 @@ header {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
+.message.assistant :is(code, pre) {
+  background-color: #2c2f38;
+  border-radius: 6px;
+  padding: 2px 4px;
+  font-family: 'Fira Code', monospace;
+}
+
+.message.assistant pre {
+  padding: 0.25rem;
+  overflow-x: auto;
+}
+
+.message.assistant blockquote {
+  border-left: 4px solid #10a37f;
+  margin: 0;
+  padding-left: 1rem;
+  color: #c1c1c1;
+}
+
+.message.assistant p {
+  margin: 0;
+}
+
+
 #input-area {
   background-color: #40414f;
   padding: 0.75rem 1rem;
