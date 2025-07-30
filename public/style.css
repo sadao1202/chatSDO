@@ -116,7 +116,7 @@ header {
   box-shadow: 0 2px 10px rgba(30, 59, 234, 0.5);
 }
 
-.message.bot {
+.message.assistant {
   background-color: #444654;
   color: #e5e5e5;
   align-self: flex-start;
