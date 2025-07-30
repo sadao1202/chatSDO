@@ -96,14 +96,14 @@ function renderChatList() {
   }
 }
 
-
 function renderMessages() {
   if (!currentChatId || !chats[currentChatId]) return;
   chat.innerHTML = '';
   const messages = chats[currentChatId].messages || [];
   messages.forEach(({ role, content }) => {
     const div = document.createElement('div');
-    div.classList.add('message', role === 'user' ? 'user' : 'bot');
+    const roleClass = role === 'user' ? 'user' : 'assistant';
+    div.classList.add('message', roleClass);
     div.textContent = `${role === 'user' ? '🧑' : '🤖'} ${content}`;
     chat.appendChild(div);
   });
