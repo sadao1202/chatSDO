@@ -169,12 +169,12 @@ async function sendMessage() {
     });
     const data = await res.json();
 
-    chats[currentChatId].messages.push({ role: 'bot', content: data.reply });
+    chats[currentChatId].messages.push({ role: 'assistant', content: data.reply });
     renderMessages();
 
     saveChats();
   } catch {
-    chats[currentChatId].messages.push({ role: 'bot', content: '❌ エラーが発生しました。' });
+    chats[currentChatId].messages.push({ role: 'assistant', content: '❌ エラーが発生しました。' });
     renderMessages();
   } finally {
     input.disabled = false;
