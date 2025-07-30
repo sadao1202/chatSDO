@@ -192,7 +192,11 @@ async function loadRemoteHistory(id) {
 newChatBtn.addEventListener('click', createNewChat);
 sendBtn.addEventListener('click', sendMessage);
 input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendMessage();
+  // Shift+Enter なら改行、Enter 単独なら送信
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
 });
 
 (function init() {
