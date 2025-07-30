@@ -13,6 +13,8 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const system_message = "あなたは、汎用的なサポートチャットシステムです。わからないことはわからないと正直に言ってください。";
+
 function loadHistory(chatId, systemMessage) {
   const filePath = path.join(memoryDir, `${chatId}.json`);
   if (fs.existsSync(filePath)) {
@@ -38,8 +40,6 @@ function deleteHistory(chatId) {
 
 app.post('/chat', async (req, res) => {
   const { message, chatId } = req.body;
-
-  const system_message = "あなたは、汎用的なサポートチャットシステムです。わからないことはわからないと正直に言ってください。";
   let history = loadHistory(chatId, system_message);
 
   history.push({ role: 'user', content: message });
@@ -80,6 +80,13 @@ app.post('/delete_chat', (req, res) => {
     console.error(e);
     res.status(500).json({ success: false, message: '削除に失敗しました' });
   }
+});
+
+app.get('/chats/:chatId', (req, res) => {
+  const { chatId } = req.params;
+  if (!/^[a-zA-Z0-9_-]+$/.test(chatId)) return res.status(400).send('Invalid');
+  const history = loadHistory(chatId, system_message);
+  res.json(history.filter(m => m.role !== 'system'));  // システムプロンプトは除く
 });
 
 const PORT = process.env.PORT || 3000;

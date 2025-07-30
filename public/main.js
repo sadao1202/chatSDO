@@ -110,10 +110,10 @@ function renderMessages() {
   chat.scrollTop = chat.scrollHeight;
 }
 
-function switchChat(id) {
+async function switchChat(id) {
   if (currentChatId === id) return;
   currentChatId = id;
-  input.value = '';
+  chats[id].messages = await loadRemoteHistory(id);
   renderChatList();
   renderMessages();
   input.focus();
@@ -181,6 +181,12 @@ async function sendMessage() {
     sendBtn.disabled = false;
     input.focus();
   }
+}
+
+async function loadRemoteHistory(id) {
+  const res = await fetch(`/chats/${id}`);
+  if (!res.ok) return [];
+  return await res.json();
 }
 
 newChatBtn.addEventListener('click', createNewChat);
