@@ -64,13 +64,7 @@ function renderChatList() {
     const deleteBtn = document.createElement('button');
     deleteBtn.innerHTML = '🗑️';
     deleteBtn.title = 'チャットを削除';
-    deleteBtn.style.marginLeft = '8px';
-    deleteBtn.style.background = 'transparent';
-    deleteBtn.style.border = 'none';
-    deleteBtn.style.color = 'white';
-    deleteBtn.style.cursor = 'pointer';
-    deleteBtn.style.fontSize = '1.1em';
-    deleteBtn.style.userSelect = 'none';
+    deleteBtn.classList.add('delete-button');
 
     deleteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
