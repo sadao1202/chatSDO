@@ -23,8 +23,17 @@ function loadHistory(chatId, systemMessage) {
 }
 
 function saveHistory(chatId, history) {
+  const sys = history.find(m => m.role === 'system');
+  const recent = history.filter(m => m.role !== 'system').slice(-19);
+  fs.writeFileSync(
+    path.join(memoryDir, `${chatId}.json`),
+    JSON.stringify([sys, ...recent], null, 2)
+  );
+}
+
+function deleteHistory(chatId) {
   const filePath = path.join(memoryDir, `${chatId}.json`);
-  fs.writeFileSync(filePath, JSON.stringify(history.slice(-20), null, 2));
+  if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 }
 
 app.post('/chat', async (req, res) => {
@@ -59,6 +68,17 @@ app.post('/chat', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ reply: '❌ エラーが発生しました' });
+  }
+});
+
+app.post('/delete_chat', (req, res) => {
+  const chatId = req.body.chatId;
+  try {
+    deleteHistory(chatId);
+    res.json({ success: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ success: false, message: '削除に失敗しました' });
   }
 });
 

@@ -70,6 +70,7 @@ function renderChatList() {
       e.stopPropagation();
       if (confirm('このチャットを削除してよろしいですか？')) {
         delete chats[id];
+        requestDeleteChatOnServer(id);
         saveChats();
         // 削除したチャットが現在選択中なら切り替え
         if (currentChatId === id) {
@@ -130,6 +131,19 @@ function createNewChat() {
 
 function saveChats() {
   localStorage.setItem('chats', JSON.stringify(chats));
+}
+
+async function requestDeleteChatOnServer(id) {
+  try {
+    const res = await fetch('/delete_chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chatId: id })
+    });
+    saveChats();
+  } catch {
+    confirm('エラーが発生しました。')
+  }
 }
 
 async function sendMessage() {
