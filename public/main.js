@@ -63,8 +63,9 @@ function renderChatList() {
     // 削除ボタン（ゴミ箱アイコン）
     const deleteBtn = document.createElement('button');
     deleteBtn.innerHTML = '🗑️';
+    deleteBtn.title   = 'チャットを削除';
+    deleteBtn.className = 'delete-button';
     deleteBtn.title = 'チャットを削除';
-    deleteBtn.classList.add('delete-button');
 
     deleteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
