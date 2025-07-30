@@ -13,7 +13,13 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const system_message = "あなたは、汎用的なサポートチャットシステムです。わからないことはわからないと正直に言ってください。";
+const system_message = `
+あなたは、汎用的なサポートチャットシステムです。
+・わからないことは「わかりません」と正直に述べてください。
+・URL や外部リソースにアクセスできない場合は「確認できませんでした」と明記し、推測はしません。
+・推測が必要な場合は「推測です」「おそらくです」と必ずラベルを付け、根拠を提示してください。
+・事実と意見を混同しないでください。
+`;
 
 function loadHistory(chatId, systemMessage) {
   const filePath = path.join(memoryDir, `${chatId}.json`);
