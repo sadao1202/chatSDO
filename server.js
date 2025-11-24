@@ -1,11 +1,15 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
+const Groq = require('groq-sdk');
 
 dotenv.config();
 
+// Groq SDK クライアント
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
+// メモリ保存フォルダ
 const memoryDir = path.join(__dirname, 'chatdata');
 if (!fs.existsSync(memoryDir)) fs.mkdirSync(memoryDir);
 
@@ -56,17 +60,15 @@ app.post('/chat', async (req, res) => {
   ];
 
   try {
-    const response = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
-      model: 'moonshotai/kimi-k2-instruct',
+    const completion = await groq.chat.completions.create({
+      model: "groq/compound",
       messages: contextMessages
-    }, {
-      headers: {
-        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      }
     });
 
-    const reply = response.data?.choices?.[0]?.message?.content ?? '⚠️ 返答が取得できませんでした';
+    const reply = completion.choices?.[0]?.message?.content 
+      ?? '⚠️ 返答が取得できませんでした';
+
+    // 履歴に保存
     history.push({ role: 'assistant', content: reply });
     saveHistory(chatId, history);
 
@@ -88,12 +90,16 @@ app.post('/delete_chat', (req, res) => {
   }
 });
 
+// ====== 履歴ロードAPI ======
 app.get('/chats/:chatId', (req, res) => {
   const { chatId } = req.params;
   if (!/^[a-zA-Z0-9_-]+$/.test(chatId)) return res.status(400).send('Invalid');
   const history = loadHistory(chatId, system_message);
-  res.json(history.filter(m => m.role !== 'system'));  // システムプロンプトは除く
+  res.json(history.filter(m => m.role !== 'system')); // system を除く
 });
 
+// ====== 起動 ======
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
+);
