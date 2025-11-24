@@ -17,6 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// システムメッセージ
 const system_message = `
 あなたは、汎用的なサポートチャットシステムです。
 ・わからないことは「わかりません」と正直に述べてください。
@@ -25,6 +26,7 @@ const system_message = `
 ・事実と意見を混同しないでください。
 `;
 
+// 履歴読み込み
 function loadHistory(chatId, systemMessage) {
   const filePath = path.join(memoryDir, `${chatId}.json`);
   if (fs.existsSync(filePath)) {
@@ -34,6 +36,7 @@ function loadHistory(chatId, systemMessage) {
   }
 }
 
+// 履歴保存
 function saveHistory(chatId, history) {
   const sys = history.find(m => m.role === 'system');
   const recent = history.filter(m => m.role !== 'system').slice(-19);
@@ -43,17 +46,21 @@ function saveHistory(chatId, history) {
   );
 }
 
+// 履歴削除
 function deleteHistory(chatId) {
   const filePath = path.join(memoryDir, `${chatId}.json`);
   if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 }
 
+// ====== メインチャットAPI ======
 app.post('/chat', async (req, res) => {
   const { message, chatId } = req.body;
   let history = loadHistory(chatId, system_message);
 
+  // 新しいユーザー発話を追加
   history.push({ role: 'user', content: message });
 
+  // コンテキストを整理（システム + 直近13件）
   const contextMessages = [
     { role: 'system', content: system_message },
     ...history.filter(m => m.role !== 'system').slice(-13)
@@ -73,12 +80,14 @@ app.post('/chat', async (req, res) => {
     saveHistory(chatId, history);
 
     res.json({ reply });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ reply: '❌ エラーが発生しました' });
   }
 });
 
+// ====== チャット削除API ======
 app.post('/delete_chat', (req, res) => {
   const chatId = req.body.chatId;
   try {
